@@ -1,12 +1,8 @@
-import { useTranslations } from "next-intl";
+import { HomePage } from "@/views";
 import { FC } from "react";
 
-import { Button } from "@/shared";
-
 const Home: FC = () => {
-  const t = useTranslations("common");
-
-  return <Button text={t("test")} />;
+  return <HomePage />;
 };
 
 export default Home;

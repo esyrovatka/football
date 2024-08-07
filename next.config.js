@@ -1,20 +1,23 @@
 const createNextIntlPlugin = require("next-intl/plugin");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const withNextIntl = createNextIntlPlugin("./i18n.ts");
 
 /** @type {import("next").NextConfig} */
-
 const nextConfig = {
   sassOptions: {
     includePaths: ["./src/core/styles/"],
-    // eslint-disable-next-line quotes
     prependData: '@import "helper.scss";',
   },
   images: {
     formats: ["image/webp"],
+    deviceSizes: [320, 420, 768, 1024, 1200],
+    imageSizes: [16, 32, 48, 64, 96],
   },
 
-  webpack(config) {
+  webpack(config, { dev, isServer }) {
     const fileLoaderRule = config.module.rules.find(rule => rule.test?.test?.(".svg"));
 
     config.module.rules.push(
@@ -48,10 +51,31 @@ const nextConfig = {
             },
           },
         ],
-      }
+      },
     );
+
+    // Add source maps
+    config.devtool = dev ? "cheap-module-source-map" : "source-map";
+
+    if (!dev && !isServer) {
+      // Minification plugins for production
+      const TerserPlugin = require("terser-webpack-plugin");
+      const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+
+      config.optimization.minimizer = [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+            },
+          },
+        }),
+        new CssMinimizerPlugin(),
+      ];
+    }
+
     return config;
   },
 };
 
-module.exports = withNextIntl(nextConfig);
+module.exports = withBundleAnalyzer(withNextIntl(nextConfig));

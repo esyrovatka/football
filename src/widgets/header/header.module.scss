@@ -1,0 +1,24 @@
+.header {
+  max-width: 1110px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 20px;
+
+  display: flex;
+  justify-content: space-between;
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: rgb(202, 134, 46);
+
+    &--active {
+      color: red;
+    }
+  }
+}
