@@ -3,6 +3,7 @@ import { NextIntlClientProvider, useMessages } from "next-intl";
 import React, { FC, PropsWithChildren } from "react";
 import { Lato } from "next/font/google";
 import { Head, SupportedLocales } from "@/core";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 
 import "@/core/styles/main.scss";
 import { Header } from "@/widgets";
@@ -29,12 +30,16 @@ const RootLayout: FC<PropsWithChildren> = ({ params: { locale }, children }) => 
     <html lang={locale} className={lato.className}>
       <Head locale={locale || SupportedLocales.EN} />
       <body>
-        {/* <StoreProvider> */}
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <Header />
-          <main className="main">{children}</main>
-        </NextIntlClientProvider>
-        {/* </StoreProvider> */}
+        <AppRouterCacheProvider>
+          {/* <StoreProvider> */}
+
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <Header />
+            <main className="main">{children}</main>
+          </NextIntlClientProvider>
+
+          {/* </StoreProvider> */}
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

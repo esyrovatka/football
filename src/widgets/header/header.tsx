@@ -14,6 +14,11 @@ const Header: FC = () => {
       label: "Home",
       href: "/en",
     },
+
+    {
+      label: "DnD",
+      href: "/en/dnd",
+    },
     {
       label: "League Champions",
       href: "/en/league/2",
